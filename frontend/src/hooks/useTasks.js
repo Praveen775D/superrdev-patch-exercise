@@ -8,18 +8,22 @@ export function useTasks(query, status, page, pageSize) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
+  setLoading(true);
+  setError(null);
 
-    fetchTasks({ query, status, page, pageSize })
-      .then((data) => {
-        setTasks(data.items);
-        setTotal(data.total);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  }, [query, status, page, pageSize]);
+  fetchTasks({ query, status, page, pageSize })
+    .then((data) => {
+      setTasks(data.items);
+      setTotal(data.total);
+      setError(null);
+    })
+    .catch((err) => {
+      setError(err.message);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, [query, status, page, pageSize]);
 
-  return { tasks, total, loading, error };
+return { tasks, total, loading, error };
 }
