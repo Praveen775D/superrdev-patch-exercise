@@ -246,3 +246,37 @@ Invalid status requests now return a controlled error response.
 
 Priority:
 Medium
+
+# Bug #4
+
+Location:
+useTasks.jsx
+
+Issue:
+Loading state not reset after failure.
+
+Root Cause:
+setLoading(false) missing in error path.
+
+Fix:
+Used finally() and reset errors before requests.
+
+Result:
+Stable loading/error handling.
+
+# Bug #5
+
+Location:
+App.jsx
+
+Issue:
+Pagination stayed on old page after filtering.
+
+Root Cause:
+Page state not reset.
+
+Fix:
+Reset page to 1 when query or status changes.
+
+Result:
+Correct search and filter behavior.
