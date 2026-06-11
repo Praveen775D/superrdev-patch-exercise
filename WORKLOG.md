@@ -176,78 +176,73 @@ Not Planned
 
 # Bugs Fixed
 
-(Add entries here as fixes are completed)
-
-## Bug 1
+## Bug #1
 
 Location:
+TaskRepository.java
 
-TBD
-
-Discovery Method:
-
-TBD
+Discovery:
+Reviewed repository query after testing search and filter behavior.
 
 Root Cause:
-
-TBD
-
-Fix Applied:
-
-TBD
-
-Reasoning:
-
-TBD
-
-Verification:
-
-TBD
-
----
-
-# Improvements
-
-(Add improvements here)
-
-## Improvement 1
-
-Description:
-
-TBD
-
-Reason:
-
-TBD
+SQL query used AND and OR without parentheses. SQL operator precedence caused filters to be applied inconsistently.
 
 Impact:
+Status filtering and archived filtering could return incorrect search results.
 
-TBD
+Fix:
+Grouped title and description search conditions using parentheses.
+
+Verification:
+Confirmed search and status filters now apply consistently across all matching tasks.
+
+Priority:
+High
+
+## Bug #2
+
+Location:
+TaskController.java
+
+Discovery:
+Search requests felt unusually slow during testing.
+
+Root Cause:
+The controller intentionally delayed every request using Thread.sleep() based on query length.
+
+Impact:
+Search became slower as users typed, causing poor user experience and unnecessary server blocking.
+
+Fix:
+Removed artificial delay logic and related complexity calculations.
+
+Verification:
+Search results now return immediately without unnecessary waiting.
+
+Priority:
+High
 
 ---
 
-# Remaining Risks
+## Bug #3
 
-(Add after code review)
+Location:
+TaskController.java
 
-* TBD
+Discovery:
+Reviewed status parsing logic while investigating potential HTTP 500 errors.
 
----
+Root Cause:
+TaskStatus.valueOf() throws IllegalArgumentException when an invalid status value is supplied.
 
-# Final Submission Notes
+Impact:
+Invalid user input could cause a server error.
 
-Files Modified:
+Fix:
+Added validation and returned HTTP 400 for invalid status values.
 
-* TBD
+Verification:
+Invalid status requests now return a controlled error response.
 
-Commits:
-
-* TBD
-
-Handwritten Notes Added:
-
-* Yes / No
-
-NOTES.md Completed:
-
-* Yes / No
+Priority:
+Medium
